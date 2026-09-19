@@ -7,8 +7,6 @@ export type FilterDetails = "tooltip" | "description" | "both";
 
 export interface ConnectionConfig extends ConnectionProfile {
   host: string;
-  libraryListPresets: LibraryListPreset[];
-  activeLibraryListPreset?: string;
   autoClearTempData: boolean;
   connectionProfiles: ConnectionProfile[];
   autoSortIFSShortcuts: boolean;
@@ -114,6 +112,8 @@ export interface ConnectionProfile {
   homeDirectory: string
   currentLibrary?: string
   libraryList: string[]
+  libraryListPresets?: LibraryListPreset[]
+  activeLibraryListPreset?: string
   objectFilters: ObjectFilters[]
   ifsShortcuts: string[]
   customVariables: CustomVariable[]

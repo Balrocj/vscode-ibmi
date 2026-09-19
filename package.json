@@ -1286,13 +1286,6 @@
 				"icon": "$(edit)"
 			},
 			{
-				"command": "code-for-ibmi.libraryListPreset.duplicate",
-				"enablement": "code-for-ibmi:connected",
-				"title": "Duplicate Library List...",
-				"category": "IBM i",
-				"icon": "$(copy)"
-			},
-			{
 				"command": "code-for-ibmi.libraryListPreset.delete",
 				"enablement": "code-for-ibmi:connected",
 				"title": "Delete Library List...",
@@ -3127,17 +3120,12 @@
 				{
 					"command": "code-for-ibmi.libraryListPreset.rename",
 					"when": "view == libraryListView && viewItem =~ /^libraryListPreset/",
-					"group": "01presetActions@01"
-				},
-				{
-					"command": "code-for-ibmi.libraryListPreset.duplicate",
-					"when": "view == libraryListView && viewItem =~ /^libraryListPreset/",
-					"group": "01presetActions@02"
+					"group": "inline@02"
 				},
 				{
 					"command": "code-for-ibmi.libraryListPreset.delete",
 					"when": "view == libraryListView && viewItem =~ /^libraryListPreset/",
-					"group": "01presetActions@03"
+					"group": "01presetActions@01"
 				},
 				{
 					"command": "code-for-ibmi.moveLibraryUp",

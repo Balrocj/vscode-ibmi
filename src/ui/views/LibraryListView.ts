@@ -1,7 +1,7 @@
 import path from "path";
 import vscode, { CancellationToken, commands, Event, FileDecoration, FileDecorationProvider, l10n, ProviderResult, ThemeColor, ThemeIcon, Uri, window } from "vscode";
 import IBMi from "../../api/IBMi";
-import { activateLibraryListPreset, createLibraryListPreset, deleteLibraryListPreset, duplicateLibraryListPreset, ensureLibraryListPresets, LibraryListDefaults, persistLibraryListPresets, renameLibraryListPreset, saveActiveLibraryListPreset } from "../../api/libraryListPresets";
+import { activateLibraryListPreset, createLibraryListPreset, deleteLibraryListPreset, ensureLibraryListPresets, LibraryListDefaults, persistLibraryListPresets, renameLibraryListPreset, saveActiveLibraryListPreset } from "../../api/libraryListPresets";
 import { instance } from "../../instantiate";
 import { ConnectionConfig, IBMiObject, LibraryListPreset, LIBRARY_LIST_MIMETYPE, URI_LIST_MIMETYPE, URI_LIST_SEPARATOR, WithLibrary } from "../../typings";
 import { VscodeTools } from "../Tools";
@@ -101,22 +101,13 @@ export function initializeLibraryListView(context: vscode.ExtensionContext) {
       const connection = instance.getConnection();
       if (connection && node) {
         const config = connection.getConfig();
-        const name = await vscode.window.showInputBox({ title: l10n.t(`Rename Library List`), value: node.preset.name });
+        const name = await vscode.window.showInputBox({
+          title: l10n.t(`Rename Library List`),
+          value: node.preset.name,
+          validateInput: value => value.trim() && config.libraryListPresets.some(preset => preset !== node.preset && preset.name.localeCompare(value.trim(), undefined, { sensitivity: `accent` }) === 0) ? l10n.t(`A library list with this name already exists.`) : undefined
+        });
         if (name?.trim()) {
           renameLibraryListPreset(config, node.preset, name);
-          await updateConfig(config);
-          libraryListView.refresh();
-        }
-      }
-    }),
-
-    vscode.commands.registerCommand(`code-for-ibmi.libraryListPreset.duplicate`, async (node: LibraryListPresetNode) => {
-      const connection = instance.getConnection();
-      if (connection && node) {
-        const config = connection.getConfig();
-        const name = await vscode.window.showInputBox({ title: l10n.t(`Duplicate Library List`), value: `${node.preset.name} ${l10n.t(`Copy`)}` });
-        if (name?.trim()) {
-          duplicateLibraryListPreset(config, node.preset, name);
           await updateConfig(config);
           libraryListView.refresh();
         }
