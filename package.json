@@ -1258,6 +1258,48 @@
 				"icon": "$(explorer-view-icon)"
 			},
 			{
+				"command": "code-for-ibmi.libraryListPreset.create",
+				"enablement": "code-for-ibmi:connected",
+				"title": "New Library List...",
+				"category": "IBM i",
+				"icon": "$(new-folder)"
+			},
+			{
+				"command": "code-for-ibmi.libraryListPreset.select",
+				"enablement": "code-for-ibmi:connected",
+				"title": "Select Library List...",
+				"category": "IBM i",
+				"icon": "$(list-selection)"
+			},
+			{
+				"command": "code-for-ibmi.libraryListPreset.activate",
+				"enablement": "code-for-ibmi:connected",
+				"title": "Use This Library List",
+				"category": "IBM i",
+				"icon": "$(check)"
+			},
+			{
+				"command": "code-for-ibmi.libraryListPreset.rename",
+				"enablement": "code-for-ibmi:connected",
+				"title": "Rename Library List...",
+				"category": "IBM i",
+				"icon": "$(edit)"
+			},
+			{
+				"command": "code-for-ibmi.libraryListPreset.duplicate",
+				"enablement": "code-for-ibmi:connected",
+				"title": "Duplicate Library List...",
+				"category": "IBM i",
+				"icon": "$(copy)"
+			},
+			{
+				"command": "code-for-ibmi.libraryListPreset.delete",
+				"enablement": "code-for-ibmi:connected",
+				"title": "Delete Library List...",
+				"category": "IBM i",
+				"icon": "$(trash)"
+			},
+			{
 				"command": "code-for-ibmi.clearDiagnostics",
 				"enablement": "code-for-ibmi:connected",
 				"title": "Clear Diagnostics",
@@ -2879,8 +2921,18 @@
 					"when": "view == connectionBrowser && code-for-ibmi:hasPreviousConnection"
 				},
 				{
+					"command": "code-for-ibmi.libraryListPreset.create",
+					"group": "navigation@1",
+					"when": "view == libraryListView"
+				},
+				{
+					"command": "code-for-ibmi.libraryListPreset.select",
+					"group": "navigation@2",
+					"when": "view == libraryListView"
+				},
+				{
 					"command": "code-for-ibmi.changeUserLibraryList",
-					"group": "navigation",
+					"group": "navigation@3",
 					"when": "view == libraryListView"
 				},
 				{
@@ -3066,6 +3118,26 @@
 					"command": "code-for-ibmi.connectToAndReload",
 					"when": "view == connectionBrowser && !listMultiSelection && viewItem == server",
 					"group": "3_connect@1"
+				},
+				{
+					"command": "code-for-ibmi.libraryListPreset.activate",
+					"when": "view == libraryListView && viewItem == libraryListPreset",
+					"group": "inline@01"
+				},
+				{
+					"command": "code-for-ibmi.libraryListPreset.rename",
+					"when": "view == libraryListView && viewItem =~ /^libraryListPreset/",
+					"group": "01presetActions@01"
+				},
+				{
+					"command": "code-for-ibmi.libraryListPreset.duplicate",
+					"when": "view == libraryListView && viewItem =~ /^libraryListPreset/",
+					"group": "01presetActions@02"
+				},
+				{
+					"command": "code-for-ibmi.libraryListPreset.delete",
+					"when": "view == libraryListView && viewItem =~ /^libraryListPreset/",
+					"group": "01presetActions@03"
 				},
 				{
 					"command": "code-for-ibmi.moveLibraryUp",

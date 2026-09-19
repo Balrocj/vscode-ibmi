@@ -7,6 +7,8 @@ export type FilterDetails = "tooltip" | "description" | "both";
 
 export interface ConnectionConfig extends ConnectionProfile {
   host: string;
+  libraryListPresets: LibraryListPreset[];
+  activeLibraryListPreset?: string;
   autoClearTempData: boolean;
   connectionProfiles: ConnectionProfile[];
   autoSortIFSShortcuts: boolean;
@@ -99,6 +101,12 @@ export interface ObjectFilters {
 export interface CustomVariable {
   name: string
   value: string
+}
+
+export interface LibraryListPreset {
+  name: string
+  currentLibrary?: string
+  libraryList: string[]
 }
 
 export interface ConnectionProfile {
