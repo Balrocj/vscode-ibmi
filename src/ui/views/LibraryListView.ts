@@ -487,6 +487,10 @@ class LibraryListView implements vscode.TreeDataProvider<LibraryListTreeNode> {
       return undefined;
     }
 
+    if (element instanceof InactiveLibraryListNode) {
+      return element.preset;
+    }
+
     const activePreset = instance.getConnection()?.getConfig().activeLibraryListPreset;
     return activePreset ? this.presetNodes.get(activePreset) : undefined;
   }
@@ -545,8 +549,8 @@ class LibraryListView implements vscode.TreeDataProvider<LibraryListTreeNode> {
 
     if (element.preset.name !== config.activeLibraryListPreset) {
       return [
-        new InactiveLibraryListNode(element.preset.currentLibrary, true),
-        ...element.preset.libraryList.map(library => new InactiveLibraryListNode(library, false))
+        new InactiveLibraryListNode(element.preset, element.preset.currentLibrary, true),
+        ...element.preset.libraryList.map(library => new InactiveLibraryListNode(element.preset, library, false))
       ];
     }
 
@@ -587,7 +591,7 @@ class LibraryListPresetNode extends vscode.TreeItem {
 }
 
 class InactiveLibraryListNode extends vscode.TreeItem {
-  constructor(library: string | undefined, isCurrentLibrary: boolean) {
+  constructor(readonly preset: LibraryListPresetNode, library: string | undefined, isCurrentLibrary: boolean) {
     super(library || l10n.t(`No current library`), vscode.TreeItemCollapsibleState.None);
     this.contextValue = `inactiveLibrary`;
     this.iconPath = new ThemeIcon(library ? `library` : `skip`);
