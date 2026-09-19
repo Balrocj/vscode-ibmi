@@ -157,6 +157,39 @@
 								"default": [],
 								"description": "Library list. Used in actions. Highest first."
 							},
+							"activeLibraryListPreset": {
+								"type": "string",
+								"description": "Name of the active library list preset."
+							},
+							"libraryListPresets": {
+								"type": "array",
+								"description": "Named library list presets.",
+								"items": {
+									"type": "object",
+									"required": [
+										"name",
+										"libraryList"
+									],
+									"properties": {
+										"name": {
+											"type": "string",
+											"description": "Preset name"
+										},
+										"currentLibrary": {
+											"type": "string",
+											"description": "Current library used by this preset"
+										},
+										"libraryList": {
+											"type": "array",
+											"description": "User library list used by this preset",
+											"items": {
+												"type": "string",
+												"title": "Library and source physical file"
+											}
+										}
+									}
+								}
+							},
 							"connectionProfiles": {
 								"type": "array",
 								"items": {
@@ -166,6 +199,39 @@
 										"name": {
 											"type": "string",
 											"description": "Profile name"
+										},
+										"activeLibraryListPreset": {
+											"type": "string",
+											"description": "Name of the active library list preset."
+										},
+										"libraryListPresets": {
+											"type": "array",
+											"description": "Named library list presets.",
+											"items": {
+												"type": "object",
+												"required": [
+													"name",
+													"libraryList"
+												],
+												"properties": {
+													"name": {
+														"type": "string",
+														"description": "Preset name"
+													},
+													"currentLibrary": {
+														"type": "string",
+														"description": "Current library used by this preset"
+													},
+													"libraryList": {
+														"type": "array",
+														"description": "User library list used by this preset",
+														"items": {
+															"type": "string",
+															"title": "Library and source physical file"
+														}
+													}
+												}
+											}
 										}
 									},
 									"additionalProperties": true
@@ -3124,8 +3190,8 @@
 				},
 				{
 					"command": "code-for-ibmi.libraryListPreset.delete",
-					"when": "view == libraryListView && viewItem =~ /^libraryListPreset/",
-					"group": "01presetActions@01"
+					"when": "view == libraryListView && viewItem == libraryListPreset",
+					"group": "inline@03"
 				},
 				{
 					"command": "code-for-ibmi.moveLibraryUp",

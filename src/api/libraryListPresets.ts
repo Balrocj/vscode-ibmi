@@ -61,16 +61,16 @@ export function deleteLibraryListPreset(config: ConnectionProfile, preset: Libra
     throw new Error(l10n.t(`At least one library list must remain.`));
   }
 
-  const index = config.libraryListPresets.indexOf(preset);
+  if (config.activeLibraryListPreset === preset.name) {
+    throw new Error(l10n.t(`The active library list cannot be deleted.`));
+  }
+
+  const index = config.libraryListPresets.findIndex(candidate => candidate.name.localeCompare(preset.name, undefined, { sensitivity: `accent` }) === 0);
   if (index < 0) {
     throw new Error(l10n.t(`Library list {0} was not found.`, preset.name));
   }
 
   config.libraryListPresets.splice(index, 1);
-
-  if (config.activeLibraryListPreset === preset.name) {
-    activateLibraryListPreset(config, config.libraryListPresets[0].name);
-  }
 }
 
 export function activateLibraryListPreset(config: ConnectionProfile, name: string) {
