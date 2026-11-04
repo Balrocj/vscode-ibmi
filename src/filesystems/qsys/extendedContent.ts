@@ -241,9 +241,17 @@ function sliceUp(arr: any[], size: number): any[] {
   return result;
 }
 
-function escapeString(val: string): string {
+export function stripLegacySourceControlChars(val: string): string {
+  // Legacy SEGU/5250 source members can include hidden control bytes in the source area.
+  // These bytes are formatting markers, not user content, so they must be removed before
+  // SQL escaping to avoid corrupting the member when it is saved back.
+  return val.replace(/[\u0000\u0016\u001A]/g, ``);
+}
+
+export function escapeString(val: string): string {
   // Note: Tabs are converted to spaces before this function is called (in uploadMemberContentWithDates),
   // so we don't need to handle them here. This prevents the backslash artifacts in #2463 and #3086.
+  val = stripLegacySourceControlChars(val);
   val = val.replace(/[\0\n\r\b'\x1a]/g, function (s) {
     switch (s) {
       case `\0`:
@@ -254,8 +262,6 @@ function escapeString(val: string): string {
         return ``;
       case `\b`:
         return `\\b`;
-      case `\x1a`:
-        return `\\Z`;
       case `'`:
         return `''`;
       default:

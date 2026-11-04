@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { Tools } from '../../Tools';
+import {escapeString, stripLegacySourceControlChars} from '../../../filesystems/qsys/extendedContent';
 
 describe('Tools.ensureFullPath tests', { concurrent: true }, () => {
   describe('Tilde expansion', () => {
@@ -136,6 +137,18 @@ describe('Tools.ensureFullPath tests', { concurrent: true }, () => {
     });
   });
 });
+
+describe('legacy source control byte handling', () =>{
+  it('should strip legacy SEU/5250 control bytes before serializing source lines', () => {
+    const input = '     \u001A' + 'F* OBJECTIVE';
+    expect(stripLegacySourceControlChars(input)).toBe('     F* OBJECTIVE');
+  });
+
+  it('should not serialize legacy control bytes as literal backslash sequences', () => {
+    const input = '     \u001A' + 'F* OBJECTIVE';
+    expect(escapeString(input)).toBe('     F* OBJECTIVE');
+  });  
+})
 
 describe('Tools.parseLsPermissions tests', { concurrent: true }, () => {
   describe('Basic rwx triplets', () => {
